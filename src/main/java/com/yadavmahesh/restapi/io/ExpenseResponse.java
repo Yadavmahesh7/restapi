@@ -12,8 +12,8 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ExpenceResponse {
-    private String expenseid;
+public class ExpenseResponse {
+    private String expenseId;
 
     private String name;
 
