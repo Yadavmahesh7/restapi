@@ -76,6 +76,31 @@ public class ExpenseServiceImpl implements ExpenseService {
         return mapToExpenseDTO(newExpenseseEntity);
     }
 
+    @Override
+    public ExpenseDTO updateExpenseDetails(ExpenseDTO expenseDTO, String expenseId) {
+        ExpenseEntity existingExpense=getExpenseEntity(expenseId);
+        ExpenseEntity updatedExpenseEntity=mapToExpensesEntity(expenseDTO);
+        updatedExpenseEntity.setId(existingExpense.getId());
+        updatedExpenseEntity.setExpenseId(existingExpense.getExpenseId());
+        updatedExpenseEntity.setCategory(existingExpense.getCategory());
+        updatedExpenseEntity.setUpdatedAt(existingExpense.getUpdatedAt());
+        updatedExpenseEntity.setCreatedAt(existingExpense.getCreatedAt());
+        updatedExpenseEntity=expenseRepository.save(updatedExpenseEntity);
+        return mapToExpenseDTO(updatedExpenseEntity);
+    }
+
+
+    /**
+     * Fetch an expense entity by ID.
+     * @param expenseId Expense ID
+     * @return ExpenseEntity
+     */
+    private ExpenseEntity getExpenseEntity(String expenseId) {
+        return expenseRepository.findByExpenseId(expenseId)
+                .orElseThrow(() -> new ResourceNotFoundExeption ("Expense not found for expense id"+expenseId));
+    }
+
+
     /**
      * Mapper Method to Map values from Expense dto to Expense entity
      * @param expenseDTO
@@ -93,5 +118,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     private ExpenseDTO mapToExpenseDTO(ExpenseEntity expenseEntity) {
         return modelMapper.map(expenseEntity, ExpenseDTO.class);
     }
+
 }
 

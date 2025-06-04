@@ -6,6 +6,7 @@ import com.yadavmahesh.restapi.io.ExpenseResponse;
 import com.yadavmahesh.restapi.service.ExpenseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -75,6 +76,20 @@ public class ExpenseController {
         expenseDTO=expenseService.saveExpenseseDetails(expenseDTO);
         return mapToExpenseResponse(expenseDTO);
     }
+
+    /**
+     *It will Update the expenses  details to database
+     * @param updateRequest
+     * @param expenseId
+     * @return ExpenseDTO
+     **/
+    @PutMapping("/expenses/{expenseId}")
+    public ExpenseResponse updateExpenseDetails(@RequestBody ExpenseRequest updateRequest, @PathVariable String expenseId){
+        ExpenseDTO updatedExpenseDTO=mapToExpenseDTO(updateRequest);
+        updatedExpenseDTO=expenseService.updateExpenseDetails(updatedExpenseDTO,expenseId);
+        return mapToExpenseResponse(updatedExpenseDTO);
+    }
+
 
     /*
      *Mapper Method to map values from Expense Request to expense dto
